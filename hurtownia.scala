@@ -9,7 +9,7 @@ spark.sql("""CREATE TABLE `Accidents` (
  `Time_id` int,
  `Poi_id` int,
  `Airport_Code` int,
- `Zip_code` string,
+ `Localization_id` int,
  `Day_id` int,
  `Accidents_perH` double,
  `HyperLogLog` double
@@ -62,6 +62,7 @@ OUTPUTFORMAT
  'org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat'""")
 
 spark.sql("""CREATE TABLE `Localization` (
+ `Localization_id` int,
  `Zip_code` string,
  `Street` string,
  `City` string,

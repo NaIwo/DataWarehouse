@@ -1,7 +1,8 @@
 package com.example.bigdata
 
 import org.apache.spark.sql._
-import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions.{col, monotonically_increasing_id, row_number}
 
 
 object LocalizationETL {
@@ -69,7 +70,7 @@ object LocalizationETL {
       .union(concatEastern)
       .distinct();
 
-    localizationDF.
+    val allDataDF = localizationDF.
       withColumnRenamed("Zipcode", "Zip_code").
       withColumnRenamed("Street", "Street").
       withColumnRenamed("City", "City").
@@ -77,9 +78,15 @@ object LocalizationETL {
       withColumnRenamed("State", "State").
       withColumnRenamed("Country", "Country").
       withColumnRenamed("Timezone", "Timezone").
-      select("Zip_code", "Street", "City", "County", "State", "Country", "Timezone").
-      write.
-      insertInto("Localization");
+      withColumn("Localization_id", monotonically_increasing_id).
+      select("Localization_id", "Zip_code", "Street", "City", "County", "State", "Country", "Timezone")
+
+    val window = Window.orderBy($"Localization_id")
+
+    val finalDataDF = allDataDF.withColumn("Localization_id", row_number.over(window))
+
+    finalDataDF.write.insertInto("Localization")
+
     println("Załadowano dane do tabeli wymiaru 'Localization'")
   }
 }

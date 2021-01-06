@@ -81,7 +81,10 @@ OUTPUTFORMAT
 
 spark.sql("""CREATE TABLE `Day` (
  `Day_id` int,
- `Night` boolean
+ `Sunrise_Sunset` string,
+ `Civil_Twilight` string,
+ `Nautical_Twilight` string,
+ `Astronomical_Twilight` string
  )
  ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'

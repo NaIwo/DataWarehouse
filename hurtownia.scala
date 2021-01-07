@@ -24,8 +24,10 @@ OUTPUTFORMAT
 
 spark.sql("""CREATE TABLE `Poi` (
  `Poi_id` int,
- `Count_poi` int,
- `Interval_poi` int
+ `Object_poi_count` int,
+ `Calming_poi_count` int,
+ `Road_poi_count` int,
+`Sign_poi_count` int
  )
 ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'

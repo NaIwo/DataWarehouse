@@ -1,0 +1,20 @@
+hadoop fs -copyToLocal gs://iwo-big-data/project2/*.csv
+hadoop fs -copyToLocal gs://iwo-big-data/project2/*.txt
+hadoop fs -mkdir -p labs/spark/externaldata
+hadoop fs -copyFromLocal *.csv labs/spark/externaldata
+hadoop fs -copyFromLocal *.txt labs/spark/externaldata
+hadoop fs -ls labs/spark/externaldata
+
+spark-shell -i hurtownia.scala
+
+spark-submit --class com.example.bigdata.LocalizationETL \
+--master yarn --num-executors 5 --driver-memory 512m \
+--executor-memory 512m --executor-cores 1 LocalizationETL.jar
+
+spark-submit --class com.example.bigdata.Day \
+--master yarn --num-executors 5 --driver-memory 512m \
+--executor-memory 512m --executor-cores 1 DayETL.jar
+
+spark-submit --class com.example.bigdata.Poi \
+--master yarn --num-executors 5 --driver-memory 512m \
+--executor-memory 512m --executor-cores 1 PoiETL.jar

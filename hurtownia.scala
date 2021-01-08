@@ -54,7 +54,7 @@ OUTPUTFORMAT
 
 spark.sql("""CREATE TABLE `Time` (
  `Time_id` int,
- `Interval_6H` int,
+ `Interval` int,
  `Day` int,
  `Month` int,
  `Year` int

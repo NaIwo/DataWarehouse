@@ -6,13 +6,13 @@ spark.sql("""DROP TABLE IF EXISTS `Localization`""")
 spark.sql("""DROP TABLE IF EXISTS `Day`""")
 
 spark.sql("""CREATE TABLE `Accidents` (
+    `Accidents_id` string,
  `Time_id` int,
  `Poi_id` int,
  `Weather_id` int,
  `Localization_id` int,
  `Day_id` int,
- `Accidents_perH` double,
- `HyperLogLog` double
+ `Accident_duration` double
  )
 ROW FORMAT SERDE
  'org.apache.hadoop.hive.ql.io.orc.OrcSerde'

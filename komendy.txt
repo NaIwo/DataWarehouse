@@ -18,3 +18,15 @@ spark-submit --class com.example.bigdata.Day \
 spark-submit --class com.example.bigdata.Poi \
 --master yarn --num-executors 5 --driver-memory 512m \
 --executor-memory 512m --executor-cores 1 PoiETL.jar
+
+spark-submit --class com.example.bigdata.Weather \
+--master yarn --num-executors 5 --driver-memory 512m \
+--executor-memory 512m --executor-cores 1 WeatherETL.jar
+
+spark-submit --class com.example.bigdata.Time \
+--master yarn --num-executors 5 --driver-memory 512m \
+--executor-memory 512m --executor-cores 1 TimeETL.jar
+
+spark-submit --class com.example.bigdata.FactsTable \
+--master yarn --num-executors 5 --driver-memory 2048m \
+--executor-memory 2048m --executor-cores 1 FactsTableETL.jar

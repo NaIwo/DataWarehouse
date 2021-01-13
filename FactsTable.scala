@@ -2,7 +2,7 @@ package com.example.bigdata
 
 import org.apache.spark.sql._
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.{abs, col, hour, min, monotonically_increasing_id, round, row_number, split, to_timestamp, unix_timestamp}
+import org.apache.spark.sql.functions.{abs, col, count, hour, min, monotonically_increasing_id, round, row_number, split, to_timestamp, unix_timestamp}
 import org.apache.spark.sql.types.IntegerType
 
 object FactsTable {
@@ -19,13 +19,14 @@ object FactsTable {
 
     val spark = SparkSession.builder()
       .appName("FactsTable")
-      //.master("local")
+      .master("local")
       .enableHiveSupport()
       .getOrCreate()
 
     val username = System.getProperty("user.name");
 
     import spark.implicits._
+    spark.sql("set spark.sql.legacy.timeParserPolicy=LEGACY")
     //////////////////////////
 
     ///////////////////////
@@ -97,7 +98,7 @@ object FactsTable {
         allAccidentsWithTime("Month") === weatherWithTimestamp("Month") &&
         allAccidentsWithTime("Day") === weatherWithTimestamp("Day") &&
         abs(allAccidentsWithTime("Hour") - weatherWithTimestamp("Hour")) <= 5)
-      .select($"ID", $"Airport_Code",  allAccidentsWithTime("Start_Time"), (unix_timestamp($"Start_Time") - unix_timestamp($"timestamp")).as("timeDifferent"))
+      .select($"ID", $"Airport_Code",  allAccidentsWithTime("Start_Time"), (unix_timestamp($"Start_Time") - unix_timestamp($"timestampString")).as("timeDifferent"))
       .groupBy($"ID")
       .agg(min("timeDifferent").as("minTimeDifferent"))
 
@@ -107,10 +108,11 @@ object FactsTable {
         && allAccidentsWithTime("Year") === weatherWithTimestamp("Year")
         && allAccidentsWithTime("Month") === weatherWithTimestamp("Month")
         && allAccidentsWithTime("Day") === weatherWithTimestamp("Day")
-        && (unix_timestamp($"Start_Time") - unix_timestamp($"timestamp")) === weatherDFWithTimeDiff("minTimeDifferent"), "left")
+        && (unix_timestamp($"Start_Time") - unix_timestamp($"timestampString")) === weatherDFWithTimeDiff("minTimeDifferent"), "left")
       .select(allAccidentsWithTime("ID"), $"Temperature", $"Humidity", $"Visibility", $"Weather_condition")
 
-    val weatherConnected = accWeather.join(weatherDF, weatherDF("Temperature") === accWeather("Temperature") &&
+
+    val weatherConnected = accWeather.join(weatherDF,
       weatherDF("Humidity") === accWeather("Humidity") &&
       weatherDF("Temperature") === accWeather("Temperature") &&
       weatherDF("Visibility") === accWeather("Visibility") &&
@@ -162,6 +164,8 @@ object FactsTable {
     finalTable.write.insertInto("Accidents")
     //finalTable.printSchema()
     println("Załadowano tabele faktow")
+
+
 
   }
 }

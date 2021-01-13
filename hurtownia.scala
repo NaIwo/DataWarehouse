@@ -39,7 +39,6 @@ OUTPUTFORMAT
 
 spark.sql("""CREATE TABLE `Weather` (
     `Weather_id` int,
- `Airport_Code` String,
  `Temperature` float,
  `Humidity` float,
  `Visibility` float,

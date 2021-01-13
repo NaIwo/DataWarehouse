@@ -35,7 +35,7 @@ object Weather {
       filter(!_.equals("None")).
       withColumn("splited", split($"value", ";")).
       select(
-        $"splited".getItem(0).as("Airport_Code"),
+        //$"splited".getItem(0).as("Airport_Code"),
         $"splited".getItem(1).as("Temperature").cast("float"),
         $"splited".getItem(2).as("Humidity").cast("float"),
         $"splited".getItem(3).as("Visibility").cast("float"),
@@ -44,7 +44,7 @@ object Weather {
 
     val allDataDF = weather.
       withColumn("Weather_id", monotonically_increasing_id).
-      select("Weather_id", "Airport_Code", "Temperature", "Humidity", "Visibility", "Weather_condition")
+      select("Weather_id", "Temperature", "Humidity", "Visibility", "Weather_condition")
 
     val window = Window.orderBy($"Weather_id")
 

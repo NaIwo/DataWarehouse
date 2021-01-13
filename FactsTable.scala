@@ -19,7 +19,7 @@ object FactsTable {
 
     val spark = SparkSession.builder()
       .appName("FactsTable")
-      .master("local")
+      //.master("local")
       .enableHiveSupport()
       .getOrCreate()
 

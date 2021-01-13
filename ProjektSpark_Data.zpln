@@ -1,0 +1,444 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "val dayDF= spark.sql(\"SELECT * FROM day\")\r\nval localizationdf = spark.sql(\"SELECT * FROM localization\")\r\nval poiDF = spark.sql(\"SELECT * FROM poi\")\r\nval timeDF = spark.sql(\"SELECT * FROM time\")\r\nval weatherDF=spark.sql(\"SELECT * FROM weather\")\r\nval accidentsDF = spark.sql(\"SELECT * FROM accidents\")",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T15:23:39+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mdayDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Day_id: int, Sunrise_Sunset: string ... 3 more fields]\n\u001b[1m\u001b[34mlocalizationdf\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Localization_id: int, Zip_code: string ... 6 more fields]\n\u001b[1m\u001b[34mpoiDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Poi_id: int, Object_poi_count: int ... 3 more fields]\n\u001b[1m\u001b[34mtimeDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Time_id: int, Interval: int ... 3 more fields]\n\u001b[1m\u001b[34mweatherDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Weather_id: int, Temperature: float ... 3 more fields]\n\u001b[1m\u001b[34maccidentsDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Accidents_id: string, Time_id: int ... 5 more fields]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610545809386_422325979",
+      "id": "paragraph_1610545809386_422325979",
+      "dateCreated": "2021-01-13T13:50:09+0000",
+      "dateStarted": "2021-01-13T15:23:39+0000",
+      "dateFinished": "2021-01-13T15:24:11+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:376"
+    },
+    {
+      "text": "val dayNightDF = accidentsDF.join(dayDF, dayDF(\"Day_id\")===accidentsDF(\"Day_id\")).groupBy(\"Sunrise_Sunset\").agg(count(\"Accidents_id\"))\r\nz.show(dayNightDF)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T15:23:41+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Sunrise_Sunset": "string",
+                      "count(Accidents_id)": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                },
+                "stackedAreaChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Sunrise_Sunset",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "count(Accidents_id)",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Sunrise_Sunset\tcount(Accidents_id)\nNight\t910794\nDay\t2600486\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mdayNightDF\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Sunrise_Sunset: string, count(Accidents_id): bigint]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=1",
+              "$$hashKey": "object:1208"
+            },
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=2",
+              "$$hashKey": "object:1209"
+            },
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=3",
+              "$$hashKey": "object:1210"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610545831453_1384124634",
+      "id": "paragraph_1610545831453_1384124634",
+      "dateCreated": "2021-01-13T13:50:31+0000",
+      "dateStarted": "2021-01-13T15:23:44+0000",
+      "dateFinished": "2021-01-13T15:24:23+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:377"
+    },
+    {
+      "text": "val zad2 = accidentsDF.join(poiDF, poiDF(\"Poi_id\")===accidentsDF(\"Poi_id\"))\r\n.withColumn(\"sumAll\",$\"Object_poi_count\"+$\"Calming_poi_count\"+$\"Road_poi_count\"+$\"Sign_poi_count\")\r\n.groupBy($\"sumAll\").agg(count(\"Accidents_id\")).orderBy(desc(\"sumAll\")).limit(10)\r\nz.show(zad2)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T15:27:17+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "sumAll": "string",
+                      "count(Accidents_id)": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "sumAll",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "count(Accidents_id)",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=23",
+              "$$hashKey": "object:2280"
+            },
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=24",
+              "$$hashKey": "object:2281"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610545938428_1847160129",
+      "id": "paragraph_1610545938428_1847160129",
+      "dateCreated": "2021-01-13T13:52:18+0000",
+      "dateStarted": "2021-01-13T15:27:12+0000",
+      "dateFinished": "2021-01-13T15:27:14+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:378",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "sumAll\tcount(Accidents_id)\n6\t49\n5\t601\n4\t12152\n3\t107121\n2\t565049\n1\t1201000\n0\t1625308\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mzad2\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.Dataset[org.apache.spark.sql.Row]\u001b[0m = [sumAll: int, count(Accidents_id): bigint]\n"
+          }
+        ]
+      }
+    },
+    {
+      "text": "val zad3 = accidentsDF.join(timeDF, timeDF(\"Time_id\")===accidentsDF(\"Time_id\")).groupBy($\"Month\").agg(count(\"Accidents_id\"))\nz.show(zad3)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-13T15:28:27+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "Month": "string",
+                      "count(Accidents_id)": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "multiBarChart": {
+                  "rotate": {
+                    "degree": "-45"
+                  },
+                  "xLabelStatus": "default"
+                }
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "Month",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "count(Accidents_id)",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "Month\tcount(Accidents_id)\n12\t313482\n1\t325181\n6\t225739\n3\t320982\n5\t212666\n9\t322561\n4\t214980\n8\t339942\n7\t245020\n10\t343516\n11\t341725\n2\t305486\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mzad3\u001b[0m: \u001b[1m\u001b[32morg.apache.spark.sql.DataFrame\u001b[0m = [Month: int, count(Accidents_id): bigint]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=26",
+              "$$hashKey": "object:3047"
+            },
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=27",
+              "$$hashKey": "object:3048"
+            },
+            {
+              "jobUrl": "http://private-cluster-iwo3-m.europe-west3-a.c.polar-strata-291619.internal:42793/jobs/job?id=28",
+              "$$hashKey": "object:3049"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610545953950_2115662796",
+      "id": "paragraph_1610545953950_2115662796",
+      "dateCreated": "2021-01-13T13:52:33+0000",
+      "dateStarted": "2021-01-13T15:27:22+0000",
+      "dateFinished": "2021-01-13T15:27:24+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:379"
+    },
+    {
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1610545971022_1324846056",
+      "id": "paragraph_1610545971022_1324846056",
+      "dateCreated": "2021-01-13T13:52:51+0000",
+      "status": "READY",
+      "$$hashKey": "object:380"
+    }
+  ],
+  "name": "ProjektSpark_Data",
+  "id": "2FU8UB1S2",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-preview2",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/ProjektSpark_Data"
+}

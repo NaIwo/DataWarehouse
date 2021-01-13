@@ -99,8 +99,7 @@ object FactsTable {
         abs(allAccidentsWithTime("Hour") - weatherWithTimestamp("Hour")) <= 5)
       .select($"ID", $"Airport_Code",  allAccidentsWithTime("Start_Time"), (unix_timestamp($"Start_Time") - unix_timestamp($"timestamp")).as("timeDifferent"))
       .groupBy($"ID")
-      .agg(min("timeDifferent")
-        .as("minTimeDifferent"))
+      .agg(min("timeDifferent").as("minTimeDifferent"))
 
     val accWeather =  allAccidentsWithTime.
       join(weatherDFWithTimeDiff, allAccidentsWithTime("ID") === weatherDFWithTimeDiff("ID"), "left")
@@ -117,6 +116,8 @@ object FactsTable {
       weatherDF("Visibility") === accWeather("Visibility") &&
       weatherDF("Weather_condition") === accWeather("Weather_condition"), "left")
       .select(accWeather("ID").as("id"), weatherDF("Weather_id"))
+
+
 
     val dayDF = spark.sql("SELECT * FROM Day")
     val poiDF = spark.sql("SELECT * FROM Poi")

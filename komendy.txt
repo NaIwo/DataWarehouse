@@ -29,4 +29,5 @@ spark-submit --class com.example.bigdata.Time \
 
 spark-submit --class com.example.bigdata.FactsTable \
 --master yarn --num-executors 5 --driver-memory 2048m \
---executor-memory 2048m --executor-cores 1 FactsTableETL.jar
+--executor-memory 2048m --executor-cores 1 FactsTableETL.jar;
+
